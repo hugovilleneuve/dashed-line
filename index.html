@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Smiley Face</title>
+        <link rel='stylesheet' type='text/css' href='stylesheet.css'/>
+    </head>
+    <body>
+
+    	<div>
+    	This is an online tool to generate a dashed line based on various parameters.  
+    	</div>
+    	
+        <canvas id="a" width="1900" height="400">
+            This text is displayed if your browser does not support HTML5 Canvas.
+        </canvas>
+				    		<form >
+    			Height: <input type="range" id="height" value="75" min="1" max="200" onchange="doDraw()" ><input id="hLable" type="textInput" onchange="textToSlider()"/><br>
+    			Block Width:<input type="range" name="points" id="blockW" value="25" min="1" max="200" onchange="doDraw()"><input id="blockWLable" type="textInput" onchange="textToSlider()"/><br>
+				  Space Width:<input type="range" name="points" id="spaceW" value="25" min="1" max="200" onchange="doDraw()"><input id="spaceWLable" type="textInput" onchange="textToSlider()"/><br>
+					Decresing Factor :<input type="range" name="points" id="factor" value="2" min="0" max="20" onchange="doDraw()"><input id="factorLable" type="textInput" onchange="textToSlider()"/><br>
+    		</form>
+<script type='text/javascript' >
+	// Set up!
+
+var a_canvas = document.getElementById("a");
+var ctx = a_canvas.getContext("2d");
+
+
+var startX = 150;
+var startY = 50;
+
+doDraw();
+
+
+function doDraw() {
+	// Update value from Slider
+	 document.getElementById('hLable').value= document.getElementById('height').value;  
+	document.getElementById('blockWLable').value= document.getElementById('blockW').value;
+	document.getElementById('spaceWLable').value= document.getElementById('spaceW').value;
+	document.getElementById('factorLable').value= document.getElementById('factor').value;
+	
+	// First Back Line
+ctx.clearRect(0, 0, a_canvas.width, a_canvas.height);
+
+var blockH = Number(document.getElementById("height").value);
+var blockW = Number(document.getElementById("blockW").value);
+var spaceW = Number(document.getElementById("spaceW").value);
+//var count = Number(document.getElementById("count").value); 
+var constFactor = Number(document.getElementById("factor").value);
+var realXOffset = 0;
+
+//document.getElementById("form1").elements.namedItem("height")
+var i = 0;
+console.log("value " + a_canvas.width)
+
+		// Initial Line
+		ctx.fillStyle = "black";
+		ctx.fillRect(0,startY,startX,blockH);
+
+
+	while (blockW >= 0 && realXOffset < a_canvas.width) {
+
+		
+		
+		ctx.fillStyle = "black";
+		ctx.strokeStyle = "black";
+		// Draw Block
+		//console.log("blockW: "+ blockW + " spaceW: " + spaceW + " realXOffset : " + realXOffset );
+		ctx.fillRect(startX+realXOffset,startY,blockW,blockH);
+		ctx.fillStyle = "white";
+		ctx.strokeStyle = "white";
+		// Draw Space
+		ctx.fillRect(startX+realXOffset+blockW,startY,spaceW,blockH);
+		//console.log("blockW: "+ blockW + " spaceW: " + spaceW + " OffSet : " + realXOffset);
+		realXOffset = realXOffset + blockW + spaceW;
+		spaceW -= constFactor; 
+		blockW -= constFactor;
+		i++;		
+	}
+
+}
+
+function textToSlider() {
+	// Update value from Slider
+	 document.getElementById('height').value =document.getElementById('hLable').value  
+	document.getElementById('blockW').value= document.getElementById('blockWLable').value;
+	document.getElementById('spaceW').value= document.getElementById('spaceWLable').value;
+	document.getElementById('factor').value= document.getElementById('factorLable').value;
+	doDraw();
+}
+	
+	
+</script>        
+
+    </body>
+</html>
